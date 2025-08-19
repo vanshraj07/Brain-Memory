@@ -33,5 +33,3 @@ Your **Second Brain Powered by AI** – Store, organize, and recall your memorie
 - **Deployment**: Vercel  
 
 ---
-   git clone https://github.com/your-username/BrainWave.git
-   cd BrainWave
