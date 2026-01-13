@@ -8,7 +8,7 @@ const Footer = () => {
     <>
     <div className="mt-7 bg-blackStandard py-2 text-white  mx-auto px-4 flex justify-between items-center font-poppins sm:px-8">
             <div className='text-sm '>
-            Made with 🤍 by PARAM 
+            Made with 🤍 by VANSH RAJ SINGH
             </div>
             <div className='flex gap-3'>
             <a href="https://github.com/SAXENA-PARAM"><Github></Github></a>
@@ -20,5 +20,6 @@ const Footer = () => {
     </>
   )
 }
+
 
 export default Footer
