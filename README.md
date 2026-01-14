@@ -1,7 +1,7 @@
 # 🧠 BrainWave  
 Your **Second Brain Powered by AI** – Store, organize, and recall your memories effortlessly with AI-powered insights and contextual Q&A.  
 
-🌐 **Live Demo**: [BrainWave on Vercel](https://brain-memory-fe.vercel.app/)  
+🌐 **Live Demo**: [BrainWave on Vercel](https://brain-memory-tawny.vercel.app/)  
 
 ---
 
