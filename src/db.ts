@@ -1,6 +1,13 @@
 import mongoose, { Model, Types } from "mongoose";
 import { Schema } from "mongoose";
 
+let isConnected = false;
+export async function connectDB() {
+    if (isConnected) return;
+    await mongoose.connect(process.env.MONGO_URL as string);
+    isConnected = true;
+}
+
 const userSchema=new Schema({
     username:{type:String,required:true,unique:true},
     password:{type:String,required:true}
