@@ -1,24 +1,8 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "api/index.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["dist/**"]
-      }
-    },
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "frontend-dist"
-      }
-    }
-  ],
-  "routes": [
-    { "src": "/api/v1/(.*)", "dest": "/api/index.js" },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "buildCommand": "tsc && vite build",
+  "outputDirectory": "frontend-dist",
+  "rewrites": [
+    { "source": "/api/v1/(.*)", "destination": "/api" }
   ]
 }
