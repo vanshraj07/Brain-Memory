@@ -22,7 +22,7 @@ const MemoryCard = ({title,imageUrl,description,creationTime,creationDate,bookMa
     //   }, [allMems]);
     async function doBookmark(){
         try{
-        const x=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/updateMemory`,{
+        const x=await axios.post(`${import.meta.env.VITE_BACKEND_URL || ""}/api/v1/updateMemory`,{
             memoryObjectId:objectId,
             currentState:bookMark
         },{
@@ -55,7 +55,7 @@ const MemoryCard = ({title,imageUrl,description,creationTime,creationDate,bookMa
     }
 
     async function doDelete(){
-        const x=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/deleteMemory`,{
+        const x=await axios.post(`${import.meta.env.VITE_BACKEND_URL || ""}/api/v1/deleteMemory`,{
             memoryObjectId:objectId
         },{
             headers:{

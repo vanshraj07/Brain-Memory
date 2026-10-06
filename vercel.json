@@ -1,8 +1,16 @@
 {
   "version": 2,
-  "buildCommand": "tsc && vite build",
+  "installCommand": "npm install",
+  "buildCommand": "npx tsc && npx vite build",
   "outputDirectory": "frontend-dist",
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "dist/**",
+      "maxDuration": 30
+    }
+  },
   "rewrites": [
-    { "source": "/api/v1/(.*)", "destination": "/api" }
+    { "source": "/api/v1/(.*)", "destination": "/api" },
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }

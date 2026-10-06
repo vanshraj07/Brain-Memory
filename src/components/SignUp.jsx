@@ -26,7 +26,7 @@ const SignUp = () => {
       }
       try{
         setIsLoading(true)
-      const res=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/signup`,{
+      const res=await axios.post(`${import.meta.env.VITE_BACKEND_URL || ""}/api/v1/signup`,{
         username:username,
         password:password
       })

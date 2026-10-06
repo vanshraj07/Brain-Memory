@@ -28,7 +28,7 @@ const AfterSearchMainApp = () => {
         setIsLoading(true)
         document.body.style.overflow="hidden"
         try{
-        const res=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/getRelatedMemories`,{
+        const res=await axios.post(`${import.meta.env.VITE_BACKEND_URL || ""}/api/v1/getRelatedMemories`,{
             query:query},{
                 headers:{
                     "authorization":localStorage.getItem("token")
@@ -37,7 +37,7 @@ const AfterSearchMainApp = () => {
         )
 
         if(res.data.topMemories.length!=0){
-        const geminiRes=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/askGemini`,{
+        const geminiRes=await axios.post(`${import.meta.env.VITE_BACKEND_URL || ""}/api/v1/askGemini`,{
             prompt:`${query} and context of this is ${res.data.topMemories[0].title!="N/A"?res.data.topMemories[0].title:""}  ${res.data.topMemories[0].description!="N/A"?res.data.topMemories[0].description:""}`
         },{
             headers:{

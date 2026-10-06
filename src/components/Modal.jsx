@@ -53,7 +53,7 @@ const Modal = () => {
                         link:link
                     }
                 }
-            const newMemory=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/addMemory`,reqBody,{
+            const newMemory=await axios.post(`${import.meta.env.VITE_BACKEND_URL || ""}/api/v1/addMemory`,reqBody,{
                 headers:{
                     "authorization":localStorage.getItem("token")
                 }

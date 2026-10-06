@@ -21,7 +21,7 @@ const MainAppHome = () => {
     async function bringMems(){
     setIsLoading(true)
     document.body.style.overflow="hidden"
-    const usersMems=await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/getAllMemories`,{
+    const usersMems=await axios.get(`${import.meta.env.VITE_BACKEND_URL || ""}/api/v1/getAllMemories`,{
         headers:{
         "authorization":localStorage.getItem("token")
         }

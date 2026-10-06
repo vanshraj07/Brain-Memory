@@ -28,13 +28,13 @@ const SignIn = () => {
     }
     try{
     setIsLoading(true)
-    const res=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/signin`,{
+    const res=await axios.post(`${import.meta.env.VITE_BACKEND_URL || ""}/api/v1/signin`,{
       username:username,
       password:password
     })
     // console.log(res.data);
     localStorage.setItem("token",res.data)
-    const X=await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/getAllMemories`,{
+    const X=await axios.get(`${import.meta.env.VITE_BACKEND_URL || ""}/api/v1/getAllMemories`,{
       headers:{
         "authorization":localStorage.getItem("token")
       }
