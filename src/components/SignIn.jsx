@@ -60,7 +60,7 @@ const SignIn = () => {
 
   return (
     <div className='bg-[#030303] h-screen w-full flex justify-center lg:justify-normal items-center font-poppins  overflow-hidden'>
-      <div className='lg:w-[45%] relative flex justify-center'>
+      <div className='lg:w-[45%] h-screen relative flex justify-center items-center overflow-hidden'>
       <div className='w-34 h-34 silverGradientNormal  absolute rounded-full top-[-10%] left-[73%] shadow-md '></div>
       <div className='w-20 h-20 silverGradientNormal absolute rounded-full top-[92%] left-[20%] shadow-md '></div>
       <div className='w-20 h-20 silverGradientNormal absolute rounded-full top-[70%] left-[60%] shadow-md '></div>
