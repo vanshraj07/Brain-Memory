@@ -2,11 +2,8 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import puppeteer from 'puppeteer-extra'
-import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 import axios from 'axios';
-import { log } from 'console';
-puppeteer.use(StealthPlugin());
+import * as cheerio from 'cheerio';
 
 let _model: any = null;
 function getEmbeddingModel() {
@@ -83,62 +80,41 @@ export async function giveYoutubeInfo(link:string){
 }
 
 export async function giveTweetInfo(link:string){
-    const browser = await puppeteer.launch({
-        headless: true,  // Faster headless mode
-        args: ['--no-sandbox', '--disable-setuid-sandbox']  // Speeds up execution
-    });
+    try {
+        // Use Twitter's free oEmbed API (no auth required, works for public tweets)
+        const oembedUrl = `https://publish.twitter.com/oembed?url=${encodeURIComponent(link)}&omit_script=true`;
+        const response = await axios.get(oembedUrl, { timeout: 10000 });
+        const data = response.data;
 
-    const page = await browser.newPage();
-    
-    await page.setRequestInterception(true);
-    page.on('request', (req) => {
-        if (['image', 'stylesheet', 'font'].includes(req.resourceType())) {
-            req.abort();
-        } else {
-            req.continue();
-        }
-    });
+        // Extract plain text from the embedded HTML
+        const $ = cheerio.load(data.html);
+        const tweetText = $('p').text() || 'N/A';
+        const creatorName = data.author_name || 'N/A';
 
-    await page.goto(link, { waitUntil: "domcontentloaded" });
-
-    await page.waitForSelector('div[data-testid="tweetText"]', {visible: true})
-    await page.waitForSelector('div[data-testid="User-Name"]', {visible: true})
-    const tweet=await page.$eval('div[data-testid="tweetText"]',el=>el.innerText).catch(()=>"N/A")
-    const username=await page.$eval('div[data-testid="User-Name"]',el=>el.innerText).catch(()=>"N/A")
-    
-    await browser.close();
-    return {description:tweet,creatorName:username}
-    
+        return { description: tweetText, creatorName };
+    } catch (error) {
+        // Fallback: extract username from the URL itself
+        const urlParts = link.split('/');
+        const username = urlParts[3] || 'Unknown';
+        return { description: 'Tweet content unavailable', creatorName: `@${username}` };
+    }
 }
 
 
 export async function giveWebsiteInfo(link: string) {
-    const browser = await puppeteer.launch({
-        headless: true, 
-        args: ['--no-sandbox', '--disable-setuid-sandbox']  
+    const response = await axios.get(link, {
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        },
+        timeout: 10000
     });
+    const $ = cheerio.load(response.data);
 
-    const page = await browser.newPage();
-
-    // Block unnecessary resources (images, stylesheets, fonts)
-    await page.setRequestInterception(true);
-    page.on('request', (req) => {
-        if (['image', 'stylesheet', 'font'].includes(req.resourceType())) {
-            req.abort();
-        } else {
-            req.continue();
-        }
-    });
-
-    await page.goto(link, { waitUntil: "domcontentloaded" });
-
-    // Extract metadata
-    const title = await page.title();
-    const description = await page.$eval('meta[name="description"]', el => el.content).catch(() => "N/A");
-    const logoUrl1 = await page.$eval('meta[property="og:image"]', el => el.content).catch(() => undefined);
-    const logoUrl2 = await page.$eval('meta[name="twitter:image"]', el => el.content).catch(() => undefined);
-
-    await browser.close();
+    // Extract metadata from the page
+    const title = $('title').text().trim() || $('meta[property="og:title"]').attr('content') || 'N/A';
+    const description = $('meta[name="description"]').attr('content') || $('meta[property="og:description"]').attr('content') || 'N/A';
+    const logoUrl1 = $('meta[property="og:image"]').attr('content') || undefined;
+    const logoUrl2 = $('meta[name="twitter:image"]').attr('content') || undefined;
 
     return {
         title,

@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 export const userRouter = Router();
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { memoryModel, userModel } from "../db";
 import jwt from "jsonwebtoken";
 import { userMiddleware } from "../middlewares/user";
