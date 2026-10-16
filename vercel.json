@@ -1,7 +1,7 @@
 {
   "version": 2,
   "installCommand": "npm install",
-  "buildCommand": "npx tsc && npx vite build",
+  "buildCommand": "npm run vercel-build",
   "outputDirectory": "frontend-dist",
   "functions": {
     "api/index.js": {
