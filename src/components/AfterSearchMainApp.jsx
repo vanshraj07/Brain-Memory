@@ -36,6 +36,7 @@ const AfterSearchMainApp = () => {
             }
         )
 
+        setFiltertedMems(res.data.topMemories)
         if(res.data.topMemories.length!=0){
         const geminiRes=await axios.post(`${import.meta.env.VITE_BACKEND_URL || ""}/api/v1/askGemini`,{
             prompt:`${query} and context of this is ${res.data.topMemories[0].title!="N/A"?res.data.topMemories[0].title:""}  ${res.data.topMemories[0].description!="N/A"?res.data.topMemories[0].description:""}`
@@ -49,7 +50,6 @@ const AfterSearchMainApp = () => {
         else{
           setIsLoading(false)
         }
-        setFiltertedMems(res.data.topMemories)
         } catch(error){
           console.error("Search error:", error)
           console.error("Error response:", error?.response?.data)
@@ -149,7 +149,7 @@ const AfterSearchMainApp = () => {
         {
             isLoading && <Loader/>
         }
-        { geminiAnswer=="" && <div ref={ref2} className='silverGradient w-full py-3 px-4 mx-auto text-7xl md:w-[80%] md:text-8xl md:leading-20 leading-16 font-semibold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center font-righteous tracking-wider'>
+        { geminiAnswer=="" && filteredMems.length===0 && !isLoading && <div ref={ref2} className='silverGradient w-full py-3 px-4 mx-auto text-7xl md:w-[80%] md:text-8xl md:leading-20 leading-16 font-semibold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center font-righteous tracking-wider'>
                 Unable to find related memories try to use more specific keywords
           </div>}
           
